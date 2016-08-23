@@ -1,4 +1,7 @@
 A ruby2julia transpiler made with ❤️:
 
-# Limitation And Restrictions
+## Limitation And Restrictions
 TBD
+
+## License
+MIT
