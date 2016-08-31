@@ -50,7 +50,6 @@ As of v0.1.0, very limited number of classes and methods are supported as shown 
 
 But there are very many differences between Ruby and Julia which I have no idea how to fix as of now. For example:
 
-- Julia supports only `dec`, `bin` and `hex` format but in Ruby the decimal system is much powerful.(`#to_s(num)` and `#to_i(num)` are supported)
 - Julia doesn't have Class concept(there is workaround though) but Ruby does
 - [Julia does not have a "null" value](http://docs.julialang.org/en/release-0.4/manual/faq/#how-does-null-or-nothingness-work-in-julia) but Ruby does
   * For example in Ruby `[1,2,3].slice!(4)` will return null but in julia there is no nil therefore this raises causes error.

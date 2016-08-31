@@ -1,7 +1,7 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe "Fixnum#to_s when given a base" do
-  xit "returns self converted to a String in the given base" do
+  it "returns self converted to a String in the given base" do
     "12345.to_s(2)".should be_equivalent_to "11000000111001"
     "12345.to_s(8)".should be_equivalent_to "30071"
     "12345.to_s(10)".should be_equivalent_to "12345"

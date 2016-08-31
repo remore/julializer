@@ -297,6 +297,10 @@ module Julializer
                 end
               when "index"
                 "findfirst(#{transpile(s[1][1])}, #{transpile(s[2])})"
+              when "to_s"
+                "base(#{transpile(s[2])}, #{transpile(s[1][1])})"
+              when "to_i"
+                "parse(Int, #{transpile(s[1][1])}, #{transpile(s[2])})"
               when "rindex"
                 "findlast(#{transpile(s[1][1])}, #{transpile(s[2])})"
               when "div"
