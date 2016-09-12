@@ -4,8 +4,11 @@ module Julializer
   class << self
     require "julializer/version"
 
-    def ruby2julia(source)
+    def ruby2julia(source, config={})
       @globals = []
+      {:nullable=>false}.each do |k,v|
+        instance_variable_set("@#{k}", config[k] || v)
+      end
       #File.write("./__julialize_debug.log", Ripper.sexp(source).pretty_inspect)
       transpile(Ripper.sexp(source))
     end
@@ -394,17 +397,20 @@ module Julializer
             "#{transpile(s[1])}:#{transpile(s[2])}"
 
           when :aref, :aref_field
+            aref_string = ->(type, list, index){
+              # using #get function for Nullable compatible access
+              type==:aref && @nullable ? "get(#{list}, #{index}, Nullable)" : list + "[#{index}]"
+            }
             if !s[2].flatten.include?(:dot2) && !s[2].flatten.include?(:dot3) && s[2][1][0][0]!=:string_literal then
-              transpile(s[1]) + "[" + transpile(s[2]) + "+1]"
+              aref_string.call(s[0], transpile(s[1]), transpile(s[2])+"+1")
             else
               if s[2].flatten.include?(:dot2)
-                range = "#{transpile(s[2][1][0][1])}+1:#{transpile(s[2][1][0][2])}+1"
+                transpile(s[1]) + "[#{transpile(s[2][1][0][1])}+1:#{transpile(s[2][1][0][2])}+1]"
               elsif s[2].flatten.include?(:dot3)
-                range = "#{transpile(s[2][1][0][1])}+1:#{transpile(s[2][1][0][2])}"
+                transpile(s[1]) + "[#{transpile(s[2][1][0][1])}+1:#{transpile(s[2][1][0][2])}]"
               else
-                range = transpile(s[2])
+                aref_string.call(s[0], transpile(s[1]), transpile(s[2]))
               end
-              transpile(s[1]) + "[" + range + "]"
             end
 
           when :const_path_ref

@@ -2,20 +2,22 @@
 require 'optparse'
 require 'julializer'
 
+config = {}
 Options = OptionParser.new do |opts|
-	opts.on("-v", "--version", "Print version") { |v| puts Julializer::VERSION; exit 0}
+  opts.on("-v", "--version", "Print version") { |v| puts Julializer::VERSION; exit 0}
+  opts.on("-n", "--nullable", "Allow nil(Nullable) conversion") { |v| config[:nullable] = true}
 end
 Options.parse!(ARGV)
 
 if ARGV.empty?
-	printf Julializer.ruby2julia($stdin.read)
+  printf Julializer.ruby2julia($stdin.read, config)
 else
-	ARGV.each do |file|
-		if File.exist? file
-			printf Julializer.ruby2julia(File.read(file))
-		else
-			puts "File was not found: #{file}"
-			exit
-		end
-	end
+  ARGV.each do |file|
+    if File.exist? file
+      printf Julializer.ruby2julia(File.read(file), config)
+    else
+      puts "File was not found: #{file}"
+      exit
+    end
+  end
 end
