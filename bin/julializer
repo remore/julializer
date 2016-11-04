@@ -10,11 +10,11 @@ end
 Options.parse!(ARGV)
 
 if ARGV.empty?
-  printf Julializer.ruby2julia($stdin.read, config)
+  print Julializer.ruby2julia($stdin.read, config)
 else
   ARGV.each do |file|
     if File.exist? file
-      printf Julializer.ruby2julia(File.read(file), config)
+      print Julializer.ruby2julia(File.read(file), config)
     else
       puts "File was not found: #{file}"
       exit
