@@ -423,9 +423,9 @@ module Julializer
               when "EPSILON"
                 "eps()"
               when "MAX"
-                "typemax(Float64)"
+                "realmax(Float64)"
               when "MIN"
-                "typemin(Float64)"
+                "realmin(Float64)"
               else
                 transpile(s[1])
               end
